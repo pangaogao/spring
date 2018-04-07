@@ -41,8 +41,7 @@ public class SimpleBeanDefinitionRegistry extends SimpleAliasRegistry implements
 
 
 	@Override
-	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
-			throws BeanDefinitionStoreException {
+	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) throws BeanDefinitionStoreException {
 
 		Assert.hasText(beanName, "'beanName' must not be empty");
 		Assert.notNull(beanDefinition, "BeanDefinition must not be null");

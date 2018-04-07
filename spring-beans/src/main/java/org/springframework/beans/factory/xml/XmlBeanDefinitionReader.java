@@ -122,8 +122,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	private final XmlValidationModeDetector validationModeDetector = new XmlValidationModeDetector();
 
-	private final ThreadLocal<Set<EncodedResource>> resourcesCurrentlyBeingLoaded =
-			new NamedThreadLocal<>("XML bean definition resources currently being loaded");
+	private final ThreadLocal<Set<EncodedResource>> resourcesCurrentlyBeingLoaded =new NamedThreadLocal<>("XML bean definition resources currently being loaded");
 
 
 	/**

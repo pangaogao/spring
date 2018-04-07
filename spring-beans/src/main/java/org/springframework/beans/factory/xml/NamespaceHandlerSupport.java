@@ -82,8 +82,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 		String localName = parserContext.getDelegate().getLocalName(element);
 		BeanDefinitionParser parser = this.parsers.get(localName);
 		if (parser == null) {
-			parserContext.getReaderContext().fatal(
-					"Cannot locate BeanDefinitionParser for element [" + localName + "]", element);
+			parserContext.getReaderContext().fatal("Cannot locate BeanDefinitionParser for element [" + localName + "]", element);
 		}
 		return parser;
 	}
@@ -93,8 +92,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	 * is registered to handle that {@link Node}.
 	 */
 	@Override
-	public BeanDefinitionHolder decorate(
-			Node node, BeanDefinitionHolder definition, ParserContext parserContext) {
+	public BeanDefinitionHolder decorate(Node node, BeanDefinitionHolder definition, ParserContext parserContext) {
 
 		return findDecoratorForNode(node, parserContext).decorate(node, definition, parserContext);
 	}

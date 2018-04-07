@@ -40,7 +40,7 @@ package org.aopalliance.intercept;
  * @author Rod Johnson
  */
 @FunctionalInterface
-public interface MethodInterceptor extends Interceptor {
+public interface  MethodInterceptor extends Interceptor {
 	
 	/**
 	 * Implement this method to perform extra treatments before and

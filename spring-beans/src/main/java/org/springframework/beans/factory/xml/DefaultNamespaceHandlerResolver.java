@@ -151,8 +151,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 			synchronized (this) {
 				if (this.handlerMappings == null) {
 					try {
-						Properties mappings =
-								PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
+						Properties mappings = PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isDebugEnabled()) {
 							logger.debug("Loaded NamespaceHandler mappings: " + mappings);
 						}
@@ -161,8 +160,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 						this.handlerMappings = handlerMappings;
 					}
 					catch (IOException ex) {
-						throw new IllegalStateException(
-								"Unable to load NamespaceHandler mappings from location [" + this.handlerMappingsLocation + "]", ex);
+						throw new IllegalStateException("Unable to load NamespaceHandler mappings from location [" + this.handlerMappingsLocation + "]", ex);
 					}
 				}
 			}

@@ -16,9 +16,6 @@
 
 package org.springframework.beans.factory.config;
 
-import java.beans.PropertyEditor;
-import java.security.AccessControlContext;
-
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.TypeConverter;
@@ -28,6 +25,9 @@ import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.StringValueResolver;
+
+import java.beans.PropertyEditor;
+import java.security.AccessControlContext;
 
 /**
  * Configuration interface to be implemented by most bean factories. Provides
@@ -49,18 +49,8 @@ import org.springframework.util.StringValueResolver;
  */
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
 
-	/**
-	 * Scope identifier for the standard singleton scope: "singleton".
-	 * Custom scopes can be added via {@code registerScope}.
-	 * @see #registerScope
-	 */
+	// @see #registerScope
 	String SCOPE_SINGLETON = "singleton";
-
-	/**
-	 * Scope identifier for the standard prototype scope: "prototype".
-	 * Custom scopes can be added via {@code registerScope}.
-	 * @see #registerScope
-	 */
 	String SCOPE_PROTOTYPE = "prototype";
 
 
@@ -75,21 +65,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 */
 	void setParentBeanFactory(BeanFactory parentBeanFactory) throws IllegalStateException;
 
-	/**
-	 * Set the class loader to use for loading bean classes.
-	 * Default is the thread context class loader.
-	 * <p>Note that this class loader will only apply to bean definitions
-	 * that do not carry a resolved bean class yet. This is the case as of
-	 * Spring 2.0 by default: Bean definitions only carry bean class names,
-	 * to be resolved once the factory processes the bean definition.
-	 * @param beanClassLoader the class loader to use,
-	 * or {@code null} to suggest the default class loader
-	 */
 	void setBeanClassLoader(ClassLoader beanClassLoader);
-
-	/**
-	 * Return this factory's class loader for loading bean classes.
-	 */
 	ClassLoader getBeanClassLoader();
 
 	/**
@@ -102,12 +78,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * @since 2.5
 	 */
 	void setTempClassLoader(ClassLoader tempClassLoader);
-
-	/**
-	 * Return the temporary ClassLoader to use for type matching purposes,
-	 * if any.
-	 * @since 2.5
-	 */
 	ClassLoader getTempClassLoader();
 
 	/**
@@ -118,11 +88,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * instance will re-query the bean class loader for newly resolved classes.
 	 */
 	void setCacheBeanMetadata(boolean cacheBeanMetadata);
-
-	/**
-	 * Return whether to cache bean metadata such as given bean definitions
-	 * (in merged fashion) and resolved bean classes.
-	 */
 	boolean isCacheBeanMetadata();
 
 	/**
@@ -133,11 +98,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * @since 3.0
 	 */
 	void setBeanExpressionResolver(BeanExpressionResolver resolver);
-
-	/**
-	 * Return the resolution strategy for expressions in bean definition values.
-	 * @since 3.0
-	 */
 	BeanExpressionResolver getBeanExpressionResolver();
 
 	/**
@@ -146,11 +106,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * @since 3.0
 	 */
 	void setConversionService(ConversionService conversionService);
-
-	/**
-	 * Return the associated ConversionService, if any.
-	 * @since 3.0
-	 */
 	ConversionService getConversionService();
 
 	/**
@@ -235,10 +190,6 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * @param beanPostProcessor the post-processor to register
 	 */
 	void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
-
-	/**
-	 * Return the current number of registered BeanPostProcessors, if any.
-	 */
 	int getBeanPostProcessorCount();
 
 	/**

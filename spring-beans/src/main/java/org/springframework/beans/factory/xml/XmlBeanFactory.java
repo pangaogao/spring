@@ -58,7 +58,7 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 
 
 	/**
-	 * Create a new XmlBeanFactory with the given resource,
+	 * Create a new XmlBeanFactory with THE given resource,
 	 * which must be parsable using DOM.
 	 * @param resource XML resource to load bean definitions from
 	 * @throws BeansException in case of loading or parsing errors

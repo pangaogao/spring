@@ -56,8 +56,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 					return;
 				}
 				if (!allowAliasOverriding()) {
-					throw new IllegalStateException("Cannot register alias '" + alias + "' for name '" +
-							name + "': It is already registered for name '" + registeredName + "'.");
+					throw new IllegalStateException("Cannot register alias '" + alias + "' for name '" + name + "': It is already registered for name '" + registeredName + "'.");
 				}
 			}
 			checkForAliasCircle(name, alias);
@@ -187,11 +186,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 		}
 	}
 
-	/**
-	 * Determine the raw name, resolving aliases to canonical names.
-	 * @param name the user-specified name
-	 * @return the transformed name
-	 */
+	// 获取最初的Bean名字
 	public String canonicalName(String name) {
 		String canonicalName = name;
 		// Handle aliasing...

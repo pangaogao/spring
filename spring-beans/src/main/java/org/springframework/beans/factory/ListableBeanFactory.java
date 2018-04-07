@@ -16,11 +16,10 @@
 
 package org.springframework.beans.factory;
 
-import java.lang.annotation.Annotation;
-import java.util.Map;
-
 import org.springframework.beans.BeansException;
 import org.springframework.core.ResolvableType;
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * Extension of the {@link BeanFactory} interface to be implemented by bean factories
@@ -29,6 +28,8 @@ import org.springframework.core.ResolvableType;
  * preload all their bean definitions (such as XML-based factories) may implement
  * this interface.
  *
+ *
+ * 扩展BeanFactory，实现可以列举所有的bean实例
  * <p>If this is a {@link HierarchicalBeanFactory}, the return values will <i>not</i>
  * take any BeanFactory hierarchy into account, but will relate only to the beans
  * defined in the current factory. Use the {@link BeanFactoryUtils} helper class

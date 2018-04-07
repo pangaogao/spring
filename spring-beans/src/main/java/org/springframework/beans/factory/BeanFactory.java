@@ -20,33 +20,14 @@ import org.springframework.beans.BeansException;
 import org.springframework.core.ResolvableType;
 
 /**
- * The root interface for accessing a Spring bean container.
- * This is the basic client view of a bean container;
- * further interfaces such as {@link ListableBeanFactory} and
+ * 1.获取Bean容器的根接口，客户端的基本视图，更多接口像{@link ListableBeanFactory}和
  * {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}
- * are available for specific purposes.
+ * 是为了定制特定的功能
  *
- * <p>This interface is implemented by objects that hold a number of bean definitions,
- * each uniquely identified by a String name. Depending on the bean definition,
- * the factory will return either an independent instance of a contained object
- * (the Prototype design pattern), or a single shared instance (a superior
- * alternative to the Singleton design pattern, in which the instance is a
- * singleton in the scope of the factory). Which type of instance will be returned
- * depends on the bean factory configuration: the API is the same. Since Spring
- * 2.0, further scopes are available depending on the concrete application
- * context (e.g. "request" and "session" scopes in a web environment).
+ * 2.这个接口会被包含很多bean定义的对象实现，每一个bean有唯一的名称
+ * 工厂会创建一个独立的实例对象（原形模式）或者一个单例（单例模式）,还涉及到作用域（request、session）
  *
- * <p>The point of this approach is that the BeanFactory is a central registry
- * of application components, and centralizes configuration of application
- * components (no more do individual objects need to read properties files,
- * for example). See chapters 4 and 11 of "Expert One-on-One J2EE Design and
- * Development" for a discussion of the benefits of this approach.
- *
- * <p>Note that it is generally better to rely on Dependency Injection
- * ("push" configuration) to configure application objects through setters
- * or constructors, rather than use any form of "pull" configuration like a
- * BeanFactory lookup. Spring's Dependency Injection functionality is
- * implemented using this BeanFactory interface and its subinterfaces.
+ * 3.sping的依赖注入功能是通过bean工厂和其子接口来实现的，推的配置而不是拉的配置
  *
  * <p>Normally a BeanFactory will load bean definitions stored in a configuration
  * source (such as an XML document), and use the {@code org.springframework.beans}
@@ -56,21 +37,21 @@ import org.springframework.core.ResolvableType;
  * properties file, etc. Implementations are encouraged to support references
  * amongst beans (Dependency Injection).
  *
- * <p>In contrast to the methods in {@link ListableBeanFactory}, all of the
- * operations in this interface will also check parent factories if this is a
- * {@link HierarchicalBeanFactory}. If a bean is not found in this factory instance,
- * the immediate parent factory will be asked. Beans in this factory instance
- * are supposed to override beans of the same name in any parent factory.
+ * 可以通过xml文件来加载bean定义，也可以直接通过java代码来创建，对于定义是在数据库、XML、属性文件，都没有限制
  *
- * <p>Bean factory implementations should support the standard bean lifecycle interfaces
- * as far as possible. The full set of initialization methods and their standard order is:
+ * 针对ListableBeanFactory的方法，如果是HierarchicalBeanFactory，所有操作都会检查父工厂
+ *
+ * 在这个工厂实例bean支持可以复写任何父工厂中同名的bean
+ *
+ * bean工厂的实现应该尽可能支持标准的bean生命周期，初始化方法集合以及标准的顺序
+ *
  * <ol>
- * <li>BeanNameAware's {@code setBeanName}
- * <li>BeanClassLoaderAware's {@code setBeanClassLoader}
- * <li>BeanFactoryAware's {@code setBeanFactory}
- * <li>EnvironmentAware's {@code setEnvironment}
- * <li>EmbeddedValueResolverAware's {@code setEmbeddedValueResolver}
- * <li>ResourceLoaderAware's {@code setResourceLoader}
+ * <li>BeanNameAware's {@code setBeanName}    设置bean的名称
+ * <li>BeanClassLoaderAware's {@code setBeanClassLoader} 设置bean的类加载器
+ * <li>BeanFactoryAware's {@code setBeanFactory}  设置Bean工厂
+ * <li>EnvironmentAware's {@code setEnvironment}  设置环境变量
+ * <li>EmbeddedValueResolverAware's {@code setEmbeddedValueResolver}  值的处理
+ * <li>ResourceLoaderAware's {@code setResourceLoader}  资源加载
  * (only applicable when running in an application context)
  * <li>ApplicationEventPublisherAware's {@code setApplicationEventPublisher}
  * (only applicable when running in an application context)
@@ -113,44 +94,11 @@ import org.springframework.core.ResolvableType;
  * @see org.springframework.beans.factory.support.RootBeanDefinition#getDestroyMethodName
  */
 public interface BeanFactory {
-
-	/**
-	 * Used to dereference a {@link FactoryBean} instance and distinguish it from
-	 * beans <i>created</i> by the FactoryBean. For example, if the bean named
-	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
-	 * will return the factory, not the instance returned by the factory.
-	 */
 	String FACTORY_BEAN_PREFIX = "&";
-
-
-	/**
-	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * <p>This method allows a Spring BeanFactory to be used as a replacement for the
-	 * Singleton or Prototype design pattern. Callers may retain references to
-	 * returned objects in the case of Singleton beans.
-	 * <p>Translates aliases back to the corresponding canonical bean name.
-	 * Will ask the parent factory if the bean cannot be found in this factory instance.
-	 * @param name the name of the bean to retrieve
-	 * @return an instance of the bean
-	 * @throws NoSuchBeanDefinitionException if there is no bean definition
-	 * with the specified name
-	 * @throws BeansException if the bean could not be obtained
-	 */
+	// 将别名转化为原始名称
 	Object getBean(String name) throws BeansException;
 
 	/**
-	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * <p>Behaves the same as {@link #getBean(String)}, but provides a measure of type
-	 * safety by throwing a BeanNotOfRequiredTypeException if the bean is not of the
-	 * required type. This means that ClassCastException can't be thrown on casting
-	 * the result correctly, as can happen with {@link #getBean(String)}.
-	 * <p>Translates aliases back to the corresponding canonical bean name.
-	 * Will ask the parent factory if the bean cannot be found in this factory instance.
-	 * @param name the name of the bean to retrieve
-	 * @param requiredType type the bean must match. Can be an interface or superclass
-	 * of the actual class, or {@code null} for any match. For example, if the value
-	 * is {@code Object.class}, this method will succeed whatever the class of the
-	 * returned instance.
 	 * @return an instance of the bean
 	 * @throws NoSuchBeanDefinitionException if there is no such bean definition
 	 * @throws BeanNotOfRequiredTypeException if the bean is not of the required type
